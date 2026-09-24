@@ -1,7 +1,10 @@
 ﻿'use client';
 
 import { useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useReducedEffects } from '@/components/motion-preferences';
+import { Tilt } from '@/components/motion-primitives/tilt';
+import { Reveal } from '@/components/portfolio-motion';
 import { Spotlight } from '@/components/motion-primitives/spotlight';
 import { Magnetic } from '@/components/motion-primitives/magnetic';
 import { ShimmerLink } from '@/components/watermelon/shimmer-link';
@@ -167,71 +170,73 @@ const filters = [
 ];
 
 function ProjectCard({ project, light }: { project: Project; light: boolean }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   return (
-    <motion.article
-      className={'project-card project-' + project.id}
-      layout
-      initial={reduce ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: reduce ? 0 : 0.4 }}
-    >
-      <Spotlight size={260} className="card-spotlight" />
-      <ProjectDiagram id={project.id} />
-      <div className="project-body">
-        <span className="project-category">{project.category}</span>
-        <h3>{project.name}</h3>
-        <p>{project.description}</p>
-        <div className="tags">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
-        <div className="project-footer">
-          <span className="project-number">RESEARCH / {project.number}</span>
-          <Sheet>
-            <SheetTrigger className="project-open">
-              View project <ArrowUpRight size={17} />
-            </SheetTrigger>
-            <SheetContent
-              className={(light ? 'light ' : 'dark ') + 'project-sheet'}
-            >
-              <SheetHeader>
-                <span className="eyebrow section-number">
-                  RESEARCH / {project.number}
-                </span>
-                <SheetTitle>{project.name}</SheetTitle>
-                <SheetDescription>{project.overview}</SheetDescription>
-              </SheetHeader>
-              <div className="sheet-body">
-                <h3>Inside the project</h3>
-                <ul>
-                  {project.details.map((detail) => (
-                    <li key={detail}>
-                      <ArrowRight size={16} />
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="tags">
-                  {project.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+    <Tilt className="project-tilt">
+      <motion.article
+        className={'project-card project-' + project.id}
+        layout
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: reduce ? 0 : 0.4 }}
+      >
+        <Spotlight size={260} className="card-spotlight" />
+        <ProjectDiagram id={project.id} />
+        <div className="project-body">
+          <span className="project-category">{project.category}</span>
+          <h3>{project.name}</h3>
+          <p>{project.description}</p>
+          <div className="tags">
+            {project.tags.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+          <div className="project-footer">
+            <span className="project-number">RESEARCH / {project.number}</span>
+            <Sheet>
+              <SheetTrigger className="project-open">
+                View project <ArrowUpRight size={17} />
+              </SheetTrigger>
+              <SheetContent
+                className={(light ? 'light ' : 'dark ') + 'project-sheet'}
+              >
+                <SheetHeader>
+                  <span className="eyebrow section-number">
+                    RESEARCH / {project.number}
+                  </span>
+                  <SheetTitle>{project.name}</SheetTitle>
+                  <SheetDescription>{project.overview}</SheetDescription>
+                </SheetHeader>
+                <div className="sheet-body">
+                  <h3>Inside the project</h3>
+                  <ul>
+                    {project.details.map((detail) => (
+                      <li key={detail}>
+                        <ArrowRight size={16} />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="tags">
+                    {project.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <ShimmerLink
+                    href={project.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {project.linkLabel} <ArrowUpRight size={17} />
+                  </ShimmerLink>
                 </div>
-                <ShimmerLink
-                  href={project.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {project.linkLabel} <ArrowUpRight size={17} />
-                </ShimmerLink>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+    </Tilt>
   );
 }
 
@@ -337,7 +342,7 @@ export function ExpertiseSection() {
             value={area.id}
             className="expertise-content"
           >
-            <div className="expertise-summary">
+            <Reveal className="expertise-summary">
               <span className="expertise-icon">
                 {area.id === 'security' ? (
                   <ShieldCheck size={26} />
@@ -349,17 +354,17 @@ export function ExpertiseSection() {
               </span>
               <h3>{area.title}</h3>
               <p>{area.description}</p>
-            </div>
+            </Reveal>
             <div className="skill-groups">
-              {area.groups.map((group) => (
-                <div key={group.label}>
+              {area.groups.map((group, index) => (
+                <Reveal key={group.label} delay={index * 0.08}>
                   <h4 className="eyebrow">{group.label}</h4>
                   <div className="skill-tags">
                     {group.tools.map((tool) => (
                       <span key={tool}>{tool}</span>
                     ))}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </TabsContent>
@@ -383,35 +388,41 @@ export function JourneySection() {
           <h3 className="journey-column-label">EXPERIENCE</h3>
           <div className="timeline">
             {experience.map((entry, index) => (
-              <article className="timeline-entry" key={entry.role}>
-                <span
-                  className={'timeline-dot ' + (!index ? 'accent-dot' : '')}
-                />
-                <span className="entry-date">{entry.date}</span>
-                <h4>{entry.role}</h4>
-                <span className="entry-organization">{entry.organization}</span>
-                <p>{entry.description}</p>
-                <div className="tags">
-                  {entry.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-              </article>
+              <Reveal key={entry.role} delay={index * 0.1}>
+                <article className="timeline-entry">
+                  <span
+                    className={'timeline-dot ' + (!index ? 'accent-dot' : '')}
+                  />
+                  <span className="entry-date">{entry.date}</span>
+                  <h4>{entry.role}</h4>
+                  <span className="entry-organization">
+                    {entry.organization}
+                  </span>
+                  <p>{entry.description}</p>
+                  <div className="tags">
+                    {entry.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
         <div className="education-column">
           <h3 className="journey-column-label">EDUCATION</h3>
-          {education.map((entry) => (
-            <article className="education-card" key={entry.title}>
-              <div className="education-top">
-                <GraduationCap size={21} />
-                <span className="entry-date">{entry.date}</span>
-              </div>
-              <h4>{entry.title}</h4>
-              <p>{entry.institution}</p>
-              <span>{entry.location}</span>
-            </article>
+          {education.map((entry, index) => (
+            <Reveal key={entry.title} delay={index * 0.1}>
+              <article className="education-card">
+                <div className="education-top">
+                  <GraduationCap size={21} />
+                  <span className="entry-date">{entry.date}</span>
+                </div>
+                <h4>{entry.title}</h4>
+                <p>{entry.institution}</p>
+                <span>{entry.location}</span>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -434,7 +445,7 @@ export function AboutSection() {
           {profile.location}
         </div>
       </div>
-      <div className="about-copy">
+      <Reveal className="about-copy">
         <p className="about-lead">
           I’m Anmol, a security researcher drawn to the places where AI, code,
           and adversary behavior meet.
@@ -458,7 +469,7 @@ export function AboutSection() {
         >
           More about my background <ArrowUpRight size={17} />
         </a>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -484,7 +495,7 @@ export function ContactSection() {
             </ShimmerLink>
           </Magnetic>
         </div>
-        <div className="contact-details">
+        <Reveal className="contact-details">
           <Mail className="contact-mail-icon" size={30} strokeWidth={1} />
           <span className="eyebrow">DROP ME A LINE</span>
           <div className="email-row">
@@ -499,7 +510,7 @@ export function ContactSection() {
               LinkedIn <ArrowUpRight size={15} />
             </a>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

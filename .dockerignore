@@ -1,0 +1,17 @@
+.git
+.github
+.openai
+.agents
+.codex
+.env*
+node_modules
+dist
+.next
+.vinext
+.wrangler
+work
+outputs
+coverage
+*.tsbuildinfo
+*.log
+next-env.d.ts

@@ -4,10 +4,10 @@ import {
   motion,
   useSpring,
   useTransform,
-  useReducedMotion,
   type SpringOptions,
 } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { useReducedEffects } from '@/components/motion-preferences';
 
 export type SpotlightProps = {
   className?: string;
@@ -20,7 +20,7 @@ export function Spotlight({
   size = 200,
   springOptions = { bounce: 0 },
 }: SpotlightProps) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [parentElement, setParentElement] = useState<HTMLElement | null>(null);

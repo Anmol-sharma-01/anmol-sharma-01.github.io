@@ -2,13 +2,14 @@
 
 // Adapted from Watermelon Platform's copy-confirm. MIT; see LICENSES.
 // Adds clipboard error handling, reduced motion, and a persistent status label.
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import { useReducedEffects } from '@/components/motion-preferences';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 
 export function CopyConfirm({ value }: { value: string }) {
   const [status, setStatus] = useState<'idle' | 'copied' | 'error'>('idle');
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   async function copy() {
     try {
       await navigator.clipboard.writeText(value);

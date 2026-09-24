@@ -13,4 +13,10 @@ Use Node 22 LTS (specified in `.nvmrc` and `.node-version`). The installed Node 
 
 Edit portfolio details in `app/content.ts`; the homepage is in `app/page.tsx`, the sections in `app/portfolio-sections.tsx`, and the theme in `app/globals.css`.
 
+## Docker
 
+Run `docker compose up --build -d`, then open **http://localhost:8080**. See [DOCKER.md](DOCKER.md) for portable image builds, other ports, and deployment instructions.
+
+## Motion
+
+Motion Primitives supplies the rotating research labels, glowing border trail, tilt cards, text effects, and magnetic links. Watermelon supplies the character reveal, shimmer links, copy feedback, and animated tab indicators. Scroll reveals, a reading progress line, and orbiting profile accents tie them together. Use the pause button beside the theme switch to stop animations; system reduced-motion preferences are also respected.

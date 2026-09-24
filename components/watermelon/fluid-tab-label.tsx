@@ -2,7 +2,8 @@
 
 // Watermelon fluid-tabs' shared-layout pill, composed inside accessible Base UI tabs.
 // MIT; see LICENSES/watermelon-platform.txt.
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useReducedEffects } from '@/components/motion-preferences';
 
 export function FluidTabLabel({
   active,
@@ -13,7 +14,7 @@ export function FluidTabLabel({
   children: React.ReactNode;
   group: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   return (
     <>
       {active && (

@@ -1,0 +1,32 @@
+name: Check Docker container
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  container:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build image
+        run: docker build -t anmol-portfolio:test .
+      - name: Start container
+        run: docker run -d --name portfolio-check -p 127.0.0.1:8080:8080 --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges:true anmol-portfolio:test
+      - name: Check running website
+        run: node scripts/check-container.mjs
+      - name: Container logs
+        if: failure()
+        run: docker logs portfolio-check
+      - name: Stop test container
+        if: always()
+        run: docker rm -f portfolio-check || true

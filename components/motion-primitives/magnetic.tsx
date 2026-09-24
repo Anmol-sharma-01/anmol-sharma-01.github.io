@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   type SpringOptions,
 } from 'motion/react';
+import { useReducedEffects } from '@/components/motion-preferences';
 
 const SPRING_CONFIG = { stiffness: 26.7, damping: 4.1, mass: 0.2 };
 
@@ -26,7 +26,7 @@ export function Magnetic({
   actionArea = 'self',
   springOptions = SPRING_CONFIG,
 }: MagneticProps) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

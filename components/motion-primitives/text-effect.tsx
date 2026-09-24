@@ -1,11 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import {
-  AnimatePresence,
-  motion,
-  stagger,
-  useReducedMotion,
-} from 'motion/react';
+import { AnimatePresence, motion, stagger } from 'motion/react';
 import type {
   TargetAndTransition,
   Transition,
@@ -13,6 +8,7 @@ import type {
   Variants,
 } from 'motion/react';
 import React from 'react';
+import { useReducedEffects } from '@/components/motion-preferences';
 
 export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
 
@@ -216,7 +212,7 @@ export function TextEffect({
   segmentTransition,
   style,
 }: TextEffectProps) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedEffects();
   const segments = splitText(children, per);
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
 
